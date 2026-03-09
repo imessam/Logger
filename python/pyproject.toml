@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "async-logger"
+version = "1.0.0"
+description = "A lightweight, high-performance asynchronous logging library for Python."
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    {name = "Mohamd Essam", email = "imessam1998@gmail.com"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: System :: Logging",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+]
+keywords = ["logging", "async", "asynchronous", "high-performance"]
+
+[project.urls]
+"Homepage" = "https://github.com/imessam/Logger"
+"Repository" = "https://github.com/imessam/Logger"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
