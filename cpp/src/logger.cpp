@@ -24,16 +24,7 @@ void Logger::log(Level level, const std::string &sender,
   entry.level = level;
   entry.sender = sender;
   entry.message = message;
-
-  // Generate timestamp at the call site
-  using clock = std::chrono::system_clock;
-  auto now = clock::now();
-  std::time_t t = clock::to_time_t(now);
-  std::tm tm_buf{};
-  localtime_r(&t, &tm_buf);
-  std::ostringstream oss;
-  oss << std::put_time(&tm_buf, "%H:%M:%S");
-  entry.timestamp = oss.str();
+  entry.timestamp = std::chrono::system_clock::now();
 
   _queue.push_back(std::move(entry));
   _cv.notify_one();
@@ -96,14 +87,23 @@ void Logger::workerLoop() {
     }
 
     std::string level_str = levelToString(entry.level);
-    std::string formatted = "[" + entry.sender + "][" + entry.timestamp + "][" +
+
+    // Convert timestamp to string in the worker thread
+    std::time_t t = std::chrono::system_clock::to_time_t(entry.timestamp);
+    std::tm tm_buf{};
+    localtime_r(&t, &tm_buf);
+    std::ostringstream oss;
+    oss << std::put_time(&tm_buf, "%H:%M:%S");
+    std::string timestamp_str = oss.str();
+
+    std::string formatted = "[" + entry.sender + "][" + timestamp_str + "][" +
                             level_str + "] " + entry.message + "\n";
 
     // Output to console
     if (entry.level == Level::ERR || entry.level == Level::WARN) {
-      std::cerr << formatted;
+      std::cerr << formatted << std::flush;
     } else {
-      std::cout << formatted;
+      std::cout << formatted << std::flush;
     }
 
     // Output to file

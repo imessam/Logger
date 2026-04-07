@@ -18,7 +18,7 @@ struct LogEntry {
   Level level;
   std::string sender;
   std::string message;
-  std::string timestamp;
+  std::chrono::system_clock::time_point timestamp;
 };
 
 class Logger {
