@@ -1,4 +1,4 @@
-add_library(logger STATIC
+add_library(logger SHARED
   ${CMAKE_CURRENT_LIST_DIR}/logger.cpp
 )
 
