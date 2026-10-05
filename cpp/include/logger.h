@@ -68,7 +68,7 @@ private:
 // "Msg";
 class LogStream {
 public:
-  LogStream(Level level, std::string_view sender)
+  LogStream(Level level, const std::string_view &sender)
       : _level(level), _sender(sender) {}
   ~LogStream() { Logger::getInstance().log(_level, _sender, _oss.str()); }
 
