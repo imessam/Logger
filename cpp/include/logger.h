@@ -25,23 +25,23 @@ class Logger {
 public:
   static Logger &getInstance();
 
-  void log(Level level, const std::string &sender, const std::string &message);
+  void log(Level level, std::string_view sender, std::string_view message);
 
   // Helper methods for direct logging
-  void debug(const std::string &sender, const std::string &message) {
+  void debug(std::string_view sender, std::string_view message) {
     log(Level::DEBUG, sender, message);
   }
-  void info(const std::string &sender, const std::string &message) {
+  void info(std::string_view sender, std::string_view message) {
     log(Level::INFO, sender, message);
   }
-  void warn(const std::string &sender, const std::string &message) {
+  void warn(std::string_view sender, std::string_view message) {
     log(Level::WARN, sender, message);
   }
-  void err(const std::string &sender, const std::string &message) {
+  void err(std::string_view sender, std::string_view message) {
     log(Level::ERR, sender, message);
   }
 
-  void setFile(const std::string &path);
+  void setFile(std::string_view path);
   void stop();
 
 private:
@@ -68,7 +68,7 @@ private:
 // "Msg";
 class LogStream {
 public:
-  LogStream(Level level, const std::string &sender)
+  LogStream(Level level, std::string_view sender)
       : _level(level), _sender(sender) {}
   ~LogStream() { Logger::getInstance().log(_level, _sender, _oss.str()); }
 
@@ -90,16 +90,16 @@ private:
 };
 
 // Convenience functions to start a stream
-inline LogStream debug(const std::string &sender) {
+inline LogStream debug(std::string_view sender) {
   return LogStream(Level::DEBUG, sender);
 }
-inline LogStream info(const std::string &sender) {
+inline LogStream info(std::string_view sender) {
   return LogStream(Level::INFO, sender);
 }
-inline LogStream warn(const std::string &sender) {
+inline LogStream warn(std::string_view sender) {
   return LogStream(Level::WARN, sender);
 }
-inline LogStream err(const std::string &sender) {
+inline LogStream err(std::string_view sender) {
   return LogStream(Level::ERR, sender);
 }
 

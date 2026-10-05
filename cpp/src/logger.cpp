@@ -14,8 +14,8 @@ Logger::Logger() : _worker(&Logger::workerLoop, this) {}
 
 Logger::~Logger() { stop(); }
 
-void Logger::log(Level level, const std::string &sender,
-                 const std::string &message) {
+void Logger::log(Level level, std::string_view sender,
+                 std::string_view message) {
   std::unique_lock<std::mutex> lock(_mutex);
   if (_stop)
     return;
@@ -30,7 +30,7 @@ void Logger::log(Level level, const std::string &sender,
   _cv.notify_one();
 }
 
-void Logger::setFile(const std::string &path) {
+void Logger::setFile(std::string_view path) {
   std::unique_lock<std::mutex> lock(_mutex);
   _file_path = path;
   if (_file_stream.is_open()) {
